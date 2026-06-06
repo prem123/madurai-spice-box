@@ -16,22 +16,31 @@ const PRODUCTS_TAG = "products";
 const DATA_DIR = path.join(process.cwd(), ".data");
 const DATA_FILE = path.join(DATA_DIR, "products.json");
 
-const useKV = Boolean(
-  process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN
-);
+// Accept either Vercel KV or Upstash Redis env-var naming.
+const KV_URL =
+  process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const KV_TOKEN =
+  process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+
+const useKV = Boolean(KV_URL && KV_TOKEN);
+
+async function getKv() {
+  const { createClient } = await import("@vercel/kv");
+  return createClient({ url: KV_URL!, token: KV_TOKEN! });
+}
 
 /* ------------------------------------------------------------------ */
 /* Low-level backends                                                  */
 /* ------------------------------------------------------------------ */
 
 async function kvRead(): Promise<Product[] | null> {
-  const { kv } = await import("@vercel/kv");
+  const kv = await getKv();
   const data = await kv.get<Product[]>(KV_KEY);
   return data ?? null;
 }
 
 async function kvWrite(products: Product[]): Promise<void> {
-  const { kv } = await import("@vercel/kv");
+  const kv = await getKv();
   await kv.set(KV_KEY, products);
 }
 
