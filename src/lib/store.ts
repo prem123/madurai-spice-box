@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { unstable_cache, revalidateTag } from "next/cache";
 import { promises as fs } from "fs";
 import path from "path";
@@ -79,11 +80,17 @@ async function writeRaw(products: Product[]): Promise<void> {
 /* Cached public reads (tagged for revalidation)                       */
 /* ------------------------------------------------------------------ */
 
-export const getAllProducts = unstable_cache(
+// Persistent cross-request cache (Vercel Data Cache). Redis is only read on a
+// cold cache or after an admin change invalidates the "products" tag — NOT on a
+// timer and NOT on every visit. `cache()` additionally dedupes repeated calls
+// within a single render so one request never reads the store more than once.
+const getAllProductsCached = unstable_cache(
   async (): Promise<Product[]> => readRaw(),
   ["all-products"],
-  { tags: [PRODUCTS_TAG], revalidate: 3600 }
+  { tags: [PRODUCTS_TAG], revalidate: false }
 );
+
+export const getAllProducts = cache(getAllProductsCached);
 
 export async function getProductBySlug(
   slug: string
