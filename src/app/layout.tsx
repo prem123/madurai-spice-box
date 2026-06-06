@@ -56,7 +56,13 @@ export const metadata: Metadata = {
     images: ["/brand/og-image.webp"],
   },
   robots: { index: true, follow: true },
-  icons: { icon: "/brand/logo.webp", apple: "/brand/logo.webp" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/brand/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: "/brand/apple-icon.png",
+  },
 };
 
 export const viewport: Viewport = {
