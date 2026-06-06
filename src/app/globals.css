@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 33 100% 97%; /* cream #FFF8F0 */
+    --foreground: 25 45% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 25 45% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 45% 15%;
+
+    --primary: 25 81% 31%; /* #8B4513 */
+    --primary-foreground: 33 100% 97%;
+
+    --secondary: 30 58% 50%; /* #C97B36 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 36 45% 90%;
+    --muted-foreground: 25 20% 40%;
+
+    --accent: 36 56% 89%; /* soft beige */
+    --accent-foreground: 25 45% 20%;
+
+    --destructive: 0 70% 50%; /* #D62828 */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 33 40% 86%;
+    --input: 33 40% 86%;
+    --ring: 30 58% 50%;
+
+    --radius: 0.85rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-cream text-foreground font-sans;
+    font-feature-settings: "ss01", "cv01";
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif;
+    letter-spacing: -0.01em;
+  }
+  ::selection {
+    @apply bg-spice/25;
+  }
+}
+
+@layer components {
+  .container-tight {
+    @apply mx-auto w-full max-w-6xl px-5 lg:px-8;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-brand/15 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-brand-600;
+  }
+  .heading-xl {
+    @apply font-serif text-4xl font-semibold leading-[1.05] text-brand-800 sm:text-5xl lg:text-6xl;
+  }
+  .heading-lg {
+    @apply font-serif text-3xl font-semibold leading-[1.1] text-brand-800 sm:text-4xl;
+  }
+  .section {
+    @apply py-16 sm:py-20 lg:py-28;
+  }
+}
+
+/* Hide scrollbar for filter chips */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* subtle paper texture for hero */
+.spice-texture {
+  background-image: radial-gradient(
+      circle at 20% 20%,
+      rgba(201, 123, 54, 0.06) 0,
+      transparent 40%
+    ),
+    radial-gradient(circle at 80% 0%, rgba(139, 69, 19, 0.05) 0, transparent 35%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
