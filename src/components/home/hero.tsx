@@ -75,8 +75,8 @@ export function Hero() {
         >
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/60 shadow-card">
             <Image
-              src="/products/garam-masala.webp"
-              alt="Madurai Spice Box freshly ground masala pack"
+              src="/products/sambar-powder.webp"
+              alt="Madurai Spice Box freshly ground Sambar Powder pack"
               fill
               priority
               sizes="(max-width: 1024px) 90vw, 520px"
