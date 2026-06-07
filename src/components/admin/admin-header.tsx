@@ -15,7 +15,7 @@ export function AdminHeader() {
             alt="Madurai Spice Box"
             width={36}
             height={36}
-            className="rounded-full"
+            className="rounded-lg"
           />
           <div className="leading-none">
             <p className="font-serif text-base font-semibold text-brand-800">

@@ -16,7 +16,7 @@ export function Footer() {
               alt="Madurai Spice Box"
               width={44}
               height={44}
-              className="rounded-full"
+              className="rounded-xl"
             />
             <span className="font-serif text-xl font-semibold text-cream">
               Madurai Spice Box

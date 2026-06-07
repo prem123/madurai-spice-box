@@ -9,13 +9,13 @@ export function Story() {
     <section className="section bg-warm-gradient text-cream">
       <div className="container-tight grid items-center gap-12 lg:grid-cols-2">
         <Reveal>
-          <div className="relative mx-auto aspect-square w-full max-w-sm">
+          <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-[2rem] border border-cream/20 shadow-card">
             <Image
               src="/brand/logo.webp"
               alt="Madurai Spice Box logo"
               fill
               sizes="(max-width: 1024px) 80vw, 400px"
-              className="object-contain drop-shadow-2xl"
+              className="object-cover"
             />
           </div>
         </Reveal>

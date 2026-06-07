@@ -132,13 +132,13 @@ export default function AboutPage() {
       <section className="section">
         <div className="container-tight grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <div className="relative mx-auto aspect-square w-full max-w-md">
+            <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-[2rem] border border-brand-100 shadow-card">
               <Image
                 src="/brand/logo.webp"
                 alt="Madurai Spice Box logo"
                 fill
                 sizes="(max-width: 1024px) 90vw, 460px"
-                className="object-contain drop-shadow-xl"
+                className="object-cover"
               />
             </div>
           </Reveal>

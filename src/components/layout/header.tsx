@@ -48,7 +48,7 @@ export function Header() {
             alt="Madurai Spice Box"
             width={44}
             height={44}
-            className="rounded-full"
+            className="rounded-xl"
             priority
           />
           <div className="hidden flex-col leading-none sm:flex">
