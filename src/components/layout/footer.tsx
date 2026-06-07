@@ -16,7 +16,7 @@ export function Footer() {
               alt="Madurai Spice Box"
               width={44}
               height={44}
-              className="rounded-xl"
+              className="rounded-full"
             />
             <span className="font-serif text-xl font-semibold text-cream">
               Madurai Spice Box
@@ -111,7 +111,7 @@ export function Footer() {
           <ul className="mt-4 space-y-3 text-sm text-cream/70">
             <li className="flex items-start gap-2.5">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-spice" />
-              {siteConfig.address}
+              <span className="whitespace-pre-line">{siteConfig.address}</span>
             </li>
             <li className="flex items-center gap-2.5">
               <Phone className="h-4 w-4 shrink-0 text-spice" />

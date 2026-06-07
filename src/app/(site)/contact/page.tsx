@@ -98,7 +98,7 @@ export default function ContactPage() {
                       {value}
                     </a>
                   ) : (
-                    <p className="mt-1 text-sm font-medium text-brand-800">
+                    <p className="mt-1 whitespace-pre-line text-sm font-medium text-brand-800">
                       {value}
                     </p>
                   )}

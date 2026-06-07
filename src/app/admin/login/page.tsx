@@ -62,7 +62,7 @@ export default function AdminLoginPage() {
             alt="Madurai Spice Box"
             width={56}
             height={56}
-            className="rounded-xl shadow-soft"
+            className="rounded-full"
           />
           <h1 className="mt-4 font-serif text-2xl font-semibold text-brand-800">
             Admin Login

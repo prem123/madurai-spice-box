@@ -12,10 +12,11 @@ export const siteConfig = {
     "Freshly ground, preservative-free South Indian spice powders and traditional health mixes — homemade quality from Madurai. Order easily on WhatsApp.",
   url: "https://maduraispicebox.com",
   // ---- EDIT THESE ----
-  whatsappNumber: "919944224060", // country code + number, no +
-  phoneDisplay: "+91 99442 24060",
+  whatsappNumber: "918088768438", // country code + number, no +
+  phoneDisplay: "+91 80887 68438",
   email: "orders@maduraispicebox.com",
-  address: "Madurai, Tamil Nadu, India",
+  address:
+    "27, Ground Floor, Ramalinga Nagar,\nNear Janaki Nagar, HMS Colony,\nTheni Main Road, Madurai,\nTamil Nadu – 625016",
   instagram: "https://instagram.com/maduraispicebox",
   facebook: "https://facebook.com/maduraispicebox",
   // --------------------

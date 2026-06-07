@@ -86,8 +86,11 @@ export default function RootLayout({
     email: siteConfig.email,
     address: {
       "@type": "PostalAddress",
+      streetAddress:
+        "27, Ground Floor, Ramalinga Nagar, Near Janaki Nagar, HMS Colony, Theni Main Road",
       addressLocality: "Madurai",
       addressRegion: "Tamil Nadu",
+      postalCode: "625016",
       addressCountry: "IN",
     },
     priceRange: "₹₹",
