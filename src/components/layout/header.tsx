@@ -44,11 +44,11 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5">
           <Image
-            src="/brand/logo.webp"
+            src="/brand/logo-mark.webp"
             alt="Madurai Spice Box"
             width={44}
             height={44}
-            className="rounded-xl"
+            className=""
             priority
           />
           <div className="hidden flex-col leading-none sm:flex">
