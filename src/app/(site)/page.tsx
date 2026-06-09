@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/hero";
 import { TrustBar } from "@/components/home/trust-bar";
 import { BestSellers } from "@/components/home/best-sellers";
+import { ReelsSection } from "@/components/home/reels-section";
 import { HealthyChoiceSection } from "@/components/home/healthy-choice";
 import { Comparison } from "@/components/home/comparison";
 import { Story } from "@/components/home/story";
@@ -28,6 +29,7 @@ export default function HomePage() {
       />
       <Hero />
       <TrustBar />
+      <ReelsSection />
       <BestSellers />
       <HealthyChoiceSection />
       <Comparison />

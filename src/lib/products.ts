@@ -7,6 +7,8 @@ export interface Product {
   categoryLabel: string;
   weight: string;
   price: number;
+  /** Optional MRP / "before" price. Shown struck-through only when > price. */
+  originalPrice?: number;
   image: string;
   shortDesc: string;
   description: string;
@@ -55,6 +57,7 @@ export const SEED_PRODUCTS: Product[] = [
     categoryLabel: "Spice Powders",
     weight: "100 g",
     price: 170,
+    originalPrice: 199,
     image: "/products/garam-masala.webp",
     shortDesc: "A fragrant blend of hand-picked whole spices.",
     description:
@@ -129,6 +132,7 @@ export const SEED_PRODUCTS: Product[] = [
     categoryLabel: "Spice Powders",
     weight: "250 g",
     price: 170,
+    originalPrice: 199,
     image: "/products/sambar-powder.webp",
     shortDesc: "The soul of South Indian sambar, ground fresh.",
     description:
@@ -270,6 +274,7 @@ export const SEED_PRODUCTS: Product[] = [
     categoryLabel: "Healthy Choice",
     weight: "250 g",
     price: 200,
+    originalPrice: 249,
     image: "/products/health-mix.webp",
     shortDesc: "A wholesome drink made from 31 natural ingredients.",
     description:
