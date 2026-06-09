@@ -55,6 +55,23 @@ export function Footer() {
               <MessageCircle className="h-5 w-5" />
             </a>
           </div>
+
+          {/* FSSAI license */}
+          <div className="mt-6 flex items-center gap-3">
+            <div className="rounded-md bg-white p-1.5">
+              <Image
+                src="/brand/fssai-logo.png"
+                alt="FSSAI licensed"
+                width={80}
+                height={39}
+                className="h-8 w-auto"
+              />
+            </div>
+            <div className="text-xs leading-tight text-cream/70">
+              <p className="font-semibold text-cream">FSSAI Licensed</p>
+              <p>Lic. No. 22426574000365</p>
+            </div>
+          </div>
         </div>
 
         {/* Quick links */}
