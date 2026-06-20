@@ -25,7 +25,7 @@ Open **`src/lib/site.ts`** and replace these placeholders with your real details
 ```ts
 whatsappNumber: "919876543210", // country code + number, NO "+" or spaces
 phoneDisplay:   "+91 98765 43210",
-email:          "orders@maduraispicebox.com",
+email:          "orders@maduraispicebox.in",
 instagram / facebook / address / url
 ```
 

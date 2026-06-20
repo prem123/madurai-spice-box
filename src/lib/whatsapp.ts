@@ -1,25 +1,9 @@
 import { siteConfig } from "./site";
-import {
-  type CartItem,
-  cartSubtotal,
-  cartShipping,
-  cartTotal,
-} from "./cart-store";
+import { type CartItem, cartTotal } from "./cart-store";
 import { formatINR } from "./utils";
 
-export interface CustomerDetails {
-  name?: string;
-  phone?: string;
-  address?: string;
-}
-
 /** Builds the structured order message and returns a wa.me deep link. */
-export function buildOrderMessage(
-  items: CartItem[],
-  customer: CustomerDetails = {}
-): string {
-  const subtotal = cartSubtotal(items);
-  const shipping = cartShipping(subtotal);
+export function buildOrderMessage(items: CartItem[]): string {
   const total = cartTotal(items);
 
   const lines: string[] = [];
@@ -33,16 +17,7 @@ export function buildOrderMessage(
     lines.push(`   Qty: ${i.qty}  |  Price: ${formatINR(i.price * i.qty)}`);
   });
   lines.push("");
-  lines.push(`Subtotal: ${formatINR(subtotal)}`);
-  lines.push(
-    `Shipping: ${shipping === 0 ? "FREE" : formatINR(shipping)}`
-  );
   lines.push(`*Total: ${formatINR(total)}*`);
-  lines.push("");
-  lines.push("*Customer Details:*");
-  lines.push(`Name: ${customer.name?.trim() || "_____"}`);
-  lines.push(`Phone: ${customer.phone?.trim() || "_____"}`);
-  lines.push(`Address: ${customer.address?.trim() || "_____"}`);
   lines.push("");
   lines.push("Please share the payment details. Thank you!");
 
@@ -55,9 +30,9 @@ export function whatsappLink(message: string): string {
   )}`;
 }
 
-/** Convenience: order link from cart + customer. */
-export function orderLink(items: CartItem[], customer?: CustomerDetails) {
-  return whatsappLink(buildOrderMessage(items, customer));
+/** Convenience: order link from cart. */
+export function orderLink(items: CartItem[]) {
+  return whatsappLink(buildOrderMessage(items));
 }
 
 /** Generic enquiry / catalog link with a preset message. */

@@ -3,15 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, MessageCircle } from "lucide-react";
-import {
-  useCart,
-  cartSubtotal,
-  cartShipping,
-  cartTotal,
-} from "@/lib/cart-store";
+import { useCart, cartSubtotal, cartTotal } from "@/lib/cart-store";
 import { orderLink } from "@/lib/whatsapp";
 import { formatINR } from "@/lib/utils";
-import { siteConfig } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -25,9 +19,7 @@ export function CartDrawer() {
     useCart();
 
   const subtotal = cartSubtotal(items);
-  const shipping = cartShipping(subtotal);
   const total = cartTotal(items);
-  const remaining = siteConfig.freeShippingThreshold - subtotal;
 
   return (
     <Sheet open={isOpen} onOpenChange={setOpen}>
@@ -58,37 +50,6 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
-            {/* Free shipping progress */}
-            {shipping > 0 ? (
-              <div className="border-b border-brand-100 bg-beige/40 px-6 py-3">
-                <p className="text-xs text-brand-700">
-                  Add{" "}
-                  <span className="font-bold">{formatINR(remaining)}</span> more
-                  for{" "}
-                  <span className="font-semibold text-whatsapp-dark">
-                    FREE delivery
-                  </span>
-                </p>
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-brand-100">
-                  <div
-                    className="h-full rounded-full bg-whatsapp transition-all"
-                    style={{
-                      width: `${Math.min(
-                        100,
-                        (subtotal / siteConfig.freeShippingThreshold) * 100
-                      )}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="border-b border-brand-100 bg-whatsapp/10 px-6 py-3">
-                <p className="text-xs font-semibold text-whatsapp-dark">
-                  🎉 You&apos;ve unlocked FREE delivery!
-                </p>
-              </div>
-            )}
-
             <div className="flex-1 overflow-y-auto px-6 py-4">
               <ul className="space-y-4">
                 {items.map((item) => (
@@ -157,12 +118,6 @@ export function CartDrawer() {
                   <span>Subtotal</span>
                   <span className="font-medium text-brand-800">
                     {formatINR(subtotal)}
-                  </span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Shipping</span>
-                  <span className="font-medium text-brand-800">
-                    {shipping === 0 ? "FREE" : formatINR(shipping)}
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-dashed border-brand-100 pt-2 text-base font-bold text-brand-800">

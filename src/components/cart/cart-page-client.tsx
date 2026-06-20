@@ -3,9 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import {
   Minus,
   Plus,
@@ -14,55 +11,21 @@ import {
   MessageCircle,
   ShieldCheck,
 } from "lucide-react";
-import {
-  useCart,
-  cartSubtotal,
-  cartShipping,
-  cartTotal,
-} from "@/lib/cart-store";
+import { useCart, cartSubtotal, cartTotal } from "@/lib/cart-store";
 import { orderLink } from "@/lib/whatsapp";
 import { formatINR } from "@/lib/utils";
-import { siteConfig } from "@/lib/site";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-
-const schema = z.object({
-  name: z.string().min(2, "Please enter your name"),
-  phone: z
-    .string()
-    .min(10, "Enter a valid 10-digit phone number")
-    .regex(/^[0-9+\s-]{10,15}$/, "Enter a valid phone number"),
-  address: z.string().min(10, "Please enter your full delivery address"),
-});
-
-type FormValues = z.infer<typeof schema>;
 
 export function CartPageClient() {
   const { items, increment, decrement, removeItem, clear } = useCart();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<FormValues>({ resolver: zodResolver(schema) });
-
   const subtotal = cartSubtotal(items);
-  const shipping = cartShipping(subtotal);
   const total = cartTotal(items);
 
-  const submit = (values: FormValues) => {
-    const link = orderLink(items, values);
-    window.open(link, "_blank", "noopener,noreferrer");
-  };
-
-  // Skip-form quick order (uses whatever is typed, even if blank)
-  const quickOrder = () => {
-    const link = orderLink(items, getValues());
+  const placeOrder = () => {
+    const link = orderLink(items);
     window.open(link, "_blank", "noopener,noreferrer");
   };
 
@@ -180,56 +143,6 @@ export function CartPageClient() {
             ))}
           </ul>
         </div>
-
-        {/* Customer details */}
-        <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft sm:p-6">
-          <h2 className="font-serif text-xl font-semibold text-brand-800">
-            Delivery Details
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            We&apos;ll add these to your WhatsApp order so we can ship faster.
-          </p>
-          <form
-            id="checkout-form"
-            onSubmit={handleSubmit(submit)}
-            className="mt-5 grid gap-4 sm:grid-cols-2"
-          >
-            <div className="sm:col-span-1">
-              <Label htmlFor="name">Full Name</Label>
-              <Input id="name" placeholder="Your name" className="mt-1.5" {...register("name")} />
-              {errors.name && (
-                <p className="mt-1 text-xs text-chilli">{errors.name.message}</p>
-              )}
-            </div>
-            <div className="sm:col-span-1">
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input
-                id="phone"
-                inputMode="tel"
-                placeholder="10-digit mobile number"
-                className="mt-1.5"
-                {...register("phone")}
-              />
-              {errors.phone && (
-                <p className="mt-1 text-xs text-chilli">{errors.phone.message}</p>
-              )}
-            </div>
-            <div className="sm:col-span-2">
-              <Label htmlFor="address">Delivery Address</Label>
-              <Textarea
-                id="address"
-                placeholder="House no, street, area, city, state, PIN code"
-                className="mt-1.5"
-                {...register("address")}
-              />
-              {errors.address && (
-                <p className="mt-1 text-xs text-chilli">
-                  {errors.address.message}
-                </p>
-              )}
-            </div>
-          </form>
-        </div>
       </div>
 
       {/* Sticky summary */}
@@ -247,18 +160,9 @@ export function CartPageClient() {
                 {formatINR(subtotal)}
               </span>
             </div>
-            <div className="flex justify-between text-muted-foreground">
-              <span>Shipping</span>
-              <span className="font-medium text-brand-800">
-                {shipping === 0 ? "FREE" : formatINR(shipping)}
-              </span>
-            </div>
-            {shipping > 0 && (
-              <p className="rounded-lg bg-beige/50 px-3 py-2 text-xs text-brand-700">
-                Add {formatINR(siteConfig.freeShippingThreshold - subtotal)} more
-                for free delivery
-              </p>
-            )}
+            <p className="rounded-lg bg-beige/50 px-3 py-2 text-xs text-brand-700">
+              Shipping is calculated and confirmed on WhatsApp.
+            </p>
             <div className="flex justify-between border-t border-dashed border-brand-100 pt-3 text-lg font-bold text-brand-800">
               <span>Total</span>
               <span>{formatINR(total)}</span>
@@ -266,20 +170,14 @@ export function CartPageClient() {
           </div>
 
           <Button
-            type="submit"
-            form="checkout-form"
+            type="button"
+            onClick={placeOrder}
             variant="whatsapp"
             size="lg"
             className="mt-5 w-full"
           >
             <MessageCircle className="h-5 w-5" /> Place Order on WhatsApp
           </Button>
-          <button
-            onClick={quickOrder}
-            className="mt-3 w-full text-center text-xs text-muted-foreground underline-offset-4 hover:text-brand-700 hover:underline"
-          >
-            Skip & order without details
-          </button>
 
           <div className="mt-5 space-y-2 rounded-xl bg-beige/40 p-4 text-xs text-brand-700">
             <p className="flex items-center gap-2 font-semibold text-brand-800">

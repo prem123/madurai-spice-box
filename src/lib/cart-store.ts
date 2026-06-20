@@ -2,7 +2,6 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { siteConfig } from "./site";
 
 export interface CartItem {
   slug: string;
@@ -82,12 +81,4 @@ export const cartCount = (items: CartItem[]) =>
 export const cartSubtotal = (items: CartItem[]) =>
   items.reduce((sum, i) => sum + i.price * i.qty, 0);
 
-export const cartShipping = (subtotal: number) =>
-  subtotal === 0 || subtotal >= siteConfig.freeShippingThreshold
-    ? 0
-    : siteConfig.shippingFee;
-
-export const cartTotal = (items: CartItem[]) => {
-  const subtotal = cartSubtotal(items);
-  return subtotal + cartShipping(subtotal);
-};
+export const cartTotal = (items: CartItem[]) => cartSubtotal(items);
