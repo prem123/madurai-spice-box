@@ -8,25 +8,17 @@ import { Story } from "@/components/home/story";
 import { Testimonials } from "@/components/home/testimonials";
 import { FaqSection } from "@/components/home/faq-section";
 import { WhatsAppCTA } from "@/components/home/whatsapp-cta";
-import { faqs } from "@/lib/faq";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  };
-
+  // Note: FAQ structured data lives only on /faq to keep a single URL eligible
+  // for FAQ rich results (avoids duplicate FAQPage across home and /faq).
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <Hero />
       <TrustBar />
       <ReelsSection />
