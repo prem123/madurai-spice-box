@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { ArrowLeft, Loader2, Save, Upload } from "lucide-react";
 import { type Product } from "@/lib/products";
+import { compressImage, MAX_IMAGE_BYTES } from "@/lib/image-compress";
 import { saveProduct, type ProductFormState } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,40 @@ export function ProductForm({ product }: { product?: Product }) {
     FormData
   >(saveProduct, {});
   const [preview, setPreview] = useState<string | null>(product?.image ?? null);
+  const [imageBusy, setImageBusy] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
+
+  // Camera photos are far too large to submit as-is: the server action rejects
+  // any body over the configured limit before it runs. Downscale on selection
+  // and put the smaller file back into the input, so the plain form submit
+  // carries the compressed version.
+  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const input = e.currentTarget;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    setImageBusy(true);
+    setImageError(null);
+    try {
+      const compressed = await compressImage(file);
+
+      if (compressed.size > MAX_IMAGE_BYTES) {
+        setImageError(
+          "This image is too large to upload. Please use a photo under 4 MB."
+        );
+        setPreview(null);
+        input.value = "";
+        return;
+      }
+
+      const dt = new DataTransfer();
+      dt.items.add(compressed);
+      input.files = dt.files;
+      setPreview(URL.createObjectURL(compressed));
+    } finally {
+      setImageBusy(false);
+    }
+  }
 
   const fe = state.fieldErrors ?? {};
 
@@ -200,13 +235,15 @@ export function ProductForm({ product }: { product?: Product }) {
               name="image"
               type="file"
               accept="image/*"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) setPreview(URL.createObjectURL(f));
-              }}
+              onChange={handleImageChange}
               className="mt-3 block w-full text-xs text-muted-foreground file:mr-3 file:rounded-full file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-cream hover:file:bg-brand-700"
             />
-            <FieldError msg={fe.image} />
+            <FieldError msg={imageError ?? fe.image} />
+            {imageBusy && (
+              <p className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" /> Optimising image…
+              </p>
+            )}
             <p className="mt-2 text-[11px] text-muted-foreground">
               {isEdit
                 ? "Leave empty to keep the current image."
@@ -249,7 +286,7 @@ export function ProductForm({ product }: { product?: Product }) {
 
       {/* Actions */}
       <div className="flex items-center gap-3">
-        <Button type="submit" size="lg" disabled={pending}>
+        <Button type="submit" size="lg" disabled={pending || imageBusy}>
           {pending ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" /> Saving…
