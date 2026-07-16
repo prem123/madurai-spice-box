@@ -3,6 +3,9 @@ import { promises as fs } from "fs";
 import path from "path";
 
 const useBlob = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+// Vercel's filesystem is read-only, so the /public fallback below cannot work
+// there — it fails with EROFS. Self-hosted deployments keep the fallback.
+const isVercel = Boolean(process.env.VERCEL);
 
 function extFor(file: File): string {
   const fromName = file.name.includes(".")
@@ -31,7 +34,14 @@ export async function saveImage(file: File, slug: string): Promise<string> {
     return blob.url;
   }
 
-  // Local fallback
+  if (isVercel) {
+    throw new Error(
+      "BLOB_READ_WRITE_TOKEN is not set. Add a Blob store to the Vercel project " +
+        "(Storage → Blob) and redeploy — image uploads cannot use the filesystem there."
+    );
+  }
+
+  // Local / self-hosted fallback
   const dir = path.join(process.cwd(), "public", "products");
   await fs.mkdir(dir, { recursive: true });
   const bytes = Buffer.from(await file.arrayBuffer());

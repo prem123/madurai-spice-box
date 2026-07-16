@@ -17,6 +17,7 @@ import {
   slugExists,
 } from "@/lib/store";
 import { saveImage } from "@/lib/upload";
+import { MAX_IMAGE_BYTES } from "@/lib/image-compress";
 import { slugify, type Product, type Category } from "@/lib/products";
 
 /* ----------------------------- Auth ----------------------------- */
@@ -114,7 +115,30 @@ export async function saveProduct(
   let image = existingImage;
 
   if (file instanceof File && file.size > 0) {
-    image = await saveImage(file, slug);
+    if (!file.type.startsWith("image/")) {
+      return {
+        error: "Please fix the highlighted fields.",
+        fieldErrors: { image: "That file is not an image." },
+      };
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      return {
+        error: "Please fix the highlighted fields.",
+        fieldErrors: { image: "Image is too large. Use a photo under 4 MB." },
+      };
+    }
+    try {
+      image = await saveImage(file, slug);
+    } catch (err) {
+      // Surface upload failures in the form rather than throwing, which would
+      // render the opaque "server-side exception" page over the admin panel.
+      console.error("Product image upload failed:", err);
+      return {
+        error:
+          "The image could not be uploaded. Please try again — if this keeps happening, check the image storage configuration.",
+        fieldErrors: { image: "Upload failed" },
+      };
+    }
   }
 
   if (!image) {
