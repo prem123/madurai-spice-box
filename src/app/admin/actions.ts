@@ -132,10 +132,12 @@ export async function saveProduct(
     } catch (err) {
       // Surface upload failures in the form rather than throwing, which would
       // render the opaque "server-side exception" page over the admin panel.
+      // This panel is password-protected, so showing the underlying reason is
+      // safe and saves a trip to the deployment logs.
       console.error("Product image upload failed:", err);
+      const reason = err instanceof Error ? err.message : String(err);
       return {
-        error:
-          "The image could not be uploaded. Please try again — if this keeps happening, check the image storage configuration.",
+        error: `The image could not be uploaded. ${reason}`,
         fieldErrors: { image: "Upload failed" },
       };
     }
