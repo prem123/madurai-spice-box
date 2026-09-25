@@ -19,6 +19,9 @@ export const siteConfig = {
     "27, Ground Floor, Ramalinga Nagar,\nNear Janaki Nagar, HMS Colony,\nTheni Main Road, Madurai,\nTamil Nadu – 625016",
   instagram: "https://instagram.com/maduraispicebox",
   facebook: "https://facebook.com/maduraispicebox",
+  // Meta Pixel ID from Events Manager. Public by design (it ships in the page
+  // source), so it lives here rather than in an env var.
+  metaPixelId: "1075902845044840",
   // --------------------
   shippingFee: 100,
   freeShippingThreshold: 1599,
